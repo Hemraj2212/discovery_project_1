@@ -22,7 +22,7 @@ services:
   # Backend - Node.js + Express API
   # ============================================
   backend:
-    image: ${DOCKERHUB_USERNAME:-hemrajborane}/mean-backend:latest
+    image: hemraj2212/mean-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -44,7 +44,7 @@ services:
   # Frontend - Angular App (Nginx se serve hoga)
   # ============================================
   frontend:
-    image: ${DOCKERHUB_USERNAME:-hemrajborane}/mean-frontend:latest
+    image: hemraj2212/mean-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile

@@ -13,7 +13,7 @@ jobs:
   # Job 1: Docker Images Build karo aur Push karo
   # ============================================
   build-and-push:
-    runs-name: Build and Push Docker Images
+    name: Build and Push Docker Images
     runs-on: ubuntu-latest
 
     steps:
@@ -53,10 +53,13 @@ jobs:
 
   # ============================================
   # Job 2: VM pe deploy karo
+  # Sirf push pe chalega, PR pe nahi
   # ============================================
   deploy:
+    name: Deploy to Cloud VM
     runs-on: ubuntu-latest
-    needs: build-and-push  # Pehle build hona chahiye
+    needs: build-and-push
+    if: github.event_name == 'push'
 
     steps:
       # VM pe SSH se connect karke deploy karo
@@ -78,9 +81,9 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/mean-frontend:latest
 
             # Purane containers band karo aur naye start karo
-            export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             docker compose down
             docker compose up -d
 
             # Purane unused images clean karo
             docker image prune -f
+
