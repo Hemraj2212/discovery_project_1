@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # MongoDB Database Container
+  # Official MongoDB image use kar rahe hain
+  # ============================================
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      # Data persist karne ke liye volume use karo
+      # Agar container restart ho toh data safe rahega
+      - mongodb_data:/data/db
+    networks:
+      - mean-network
+
+  # ============================================
+  # Backend - Node.js + Express API
+  # ============================================
+  backend:
+    image: ${DOCKERHUB_USERNAME:-hemrajborane}/mean-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      # MongoDB se connect karne ka URL
+      # "mongodb" Docker network mein container ka naam hai
+      - MONGODB_URI=mongodb://mongodb:27017/dd_db
+    depends_on:
+      # Backend start hone se pehle MongoDB start hona chahiye
+      - mongodb
+    networks:
+      - mean-network
+
+  # ============================================
+  # Frontend - Angular App (Nginx se serve hoga)
+  # ============================================
+  frontend:
+    image: ${DOCKERHUB_USERNAME:-hemrajborane}/mean-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - mean-network
+
+  # ============================================
+  # Nginx Reverse Proxy
+  # Sab kuch port 80 se accessible hoga
+  # ============================================
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      # Port 80 pe poora application access hoga
+      - "80:80"
+    volumes:
+      # Apni custom Nginx config mount karo
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - mean-network
+
+# Shared network - sab containers ek doosre se baat kar sakenge
+networks:
+  mean-network:
+    driver: bridge
+
+# MongoDB data persist karne ke liye volume
+volumes:
+  mongodb_data:
+    driver: local
