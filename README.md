@@ -279,25 +279,14 @@ Nginx ek single entry point hai port **80** pe:
 
 ## 📸 Screenshots
 
-### 1. CI/CD Pipeline Execution
-> *Add screenshot of GitHub Actions running successfully*
-> ![CI/CD Pipeline](screenshots/cicd-pipeline.png)
+### 1. Docker Hub Repositories
+![Docker Hub Repositories](screenshots/docker_hub_repositories.png)
 
-### 2. Docker Hub Images
-> *Add screenshot of Docker Hub showing pushed images*
-> ![Docker Hub](screenshots/docker-hub.png)
+### 2. Application Running on AWS (Tutorials List)
+![App Running - Tutorials List](screenshots/app_running.png)
 
-### 3. Application Running
-> *Add screenshot of the tutorial management UI*
-> ![Application UI](screenshots/app-ui.png)
-
-### 4. Docker Compose Status
-> *Add screenshot of `docker compose ps` output*
-> ![Docker Status](screenshots/docker-status.png)
-
-### 5. Nginx Proxy Setup
-> *Add screenshot showing Nginx configuration*
-> ![Nginx Setup](screenshots/nginx-setup.png)
+### 3. Application Running on AWS (Add Tutorial)
+![App Running - Add Tutorial](screenshots/app_add_tutorial.png)
 
 ---
 
